@@ -9,8 +9,6 @@ use Input;
 use Session;
 use Redirect;
 use App\User;
-use App\Http\Services\service1;
-
 
 
 // This contains legacy code 
