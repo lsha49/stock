@@ -37,22 +37,12 @@ class UserController extends Controller
 
     public function update($id)
     {
-      // validate
-      // read more on validation at http://laravel.com/docs/validation
+
       $rules = array(
         'id'       => 'required',
         'name'      => 'required',
         'email' => 'required'
       );
-    //  $validator = Validator::make(Input::all(), $rules);
-
-      // process the login
-      //if ($validator->fails()) {
-      //    return Redirect::to('nerds/' . $id . '/edit')
-      //        ->withErrors($validator)
-      //        ->withInput(Input::except('password'));
-      //} else {
-          // store
           $user = User::find($id);
           //$user->id       = Input::get('id');
           $user->name       = Input::get('name');
@@ -79,25 +69,6 @@ class UserController extends Controller
       // redirect
       Session::flash('message', 'Successfully deleted the car!');
       return Redirect::to('users');
-    }
-
-
-
-
-    public function sqlSearch()
-    {
-      $urlValue = 'usersearchResult';
-      return view('others.sqlSearch') -> with('urlValue', $urlValue);
-    }
-
-    public function sqlsearchResult()
-    {
-      $id = Input::get('id');
-      $modelName = new User;
-
-      $user = service1::sqlResult($modelName,$id);
-
-      return view('auth.show', array('users' => $user));
     }
 
 
