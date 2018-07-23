@@ -9,6 +9,7 @@ important routes:
 This is for stock online testing only,
 
 important files:
+resources/views/stockPrice/index.blade
 app/http/controllers/baseControler , this contains essential code
 app/http/models, contains essental models
 app/role & app/user, contains model code for use login and basic access control

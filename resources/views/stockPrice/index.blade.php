@@ -40,10 +40,14 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	},
 	data: [{
 		type: "line", 
+		showInLegend: true, 
+		legendText: "QUALCOMM_values",
 		dataPoints: valuesQ,
 	},
     {
 		type: "line", 
+		showInLegend: true, 
+		legendText: "NASDAQ_values",
         dataPoints: valuesN
 	}
     
@@ -59,5 +63,6 @@ chart.render();
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
-<h3>The highest profit is: {!!$data['profit']!!}<h3>
+<h3>The highest q_profit is: {!!$data['qprofit']!!}<h3>
+<h3>The highest n_profit is: {!!$data['nprofit']!!}<h3>
 </html>

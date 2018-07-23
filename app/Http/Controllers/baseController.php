@@ -22,25 +22,25 @@ class baseController extends Controller
   {
     $data['qdata'] = Qdata::all();
     $data['ndata'] = Ndata::all();
-    $data['profit'] = $this->findMaxProfit($data['qdata']->toArray());
+    $data['qprofit'] = $this->findMaxProfit($data['qdata']->toArray());
+    $data['nprofit'] = $this->findMaxProfit($data['ndata']->toArray());
     return view('stockPrice.index')->with('data', $data);
   }
 
   private function findMaxProfit($pricesObject)
   {
     $bestProfit = 0;
-    $pricetem = $pricesObject;
     for ($index = 0; $index < count($pricesObject); $index++) { 
+        $pricetem = $pricesObject;
         $tem = array_splice($pricetem, 0, $index);
         foreach($tem as $comparator){
           $comparatorProfit = $pricesObject[$index]['CLOSE'] - $comparator['CLOSE'];
-          if($comparatorProfit < 0 && $comparatorProfit < $bestProfit){
+          if($comparatorProfit < $bestProfit){
             $bestProfit = $comparatorProfit; 
           }
       }
     }
       return -$bestProfit;
-    
   }
 
 
