@@ -11,15 +11,15 @@ use Redirect;
 use App\User;
 use App\Http\Services\service1;
 
+
+
+// This contains legacy code 
 class UserController extends Controller
 {
 
     public function userMan()
     {
-      // get all the nerds
       $users = User::all();
-
-      // load the view and pass the nerds
       return view('auth.userMan')
           ->with('users', $users);
     }
@@ -27,32 +27,19 @@ class UserController extends Controller
 
     public function edit($id)
     {
-      // get the nerd
       $user = User::find($id);
-
-      // show the edit form and pass the nerd
       return view('auth.edit', array('user' => $user));
     }
 
 
     public function update($id)
     {
-
-      $rules = array(
-        'id'       => 'required',
-        'name'      => 'required',
-        'email' => 'required'
-      );
           $user = User::find($id);
-          //$user->id       = Input::get('id');
           $user->name       = Input::get('name');
           $user->email      = Input::get('email');
           $user->save();
-
-          // redirect
           Session::flash('message', 'Successfully updated nerd!');
           return Redirect::to('users');
-      //}
     }
 
     /**
@@ -65,9 +52,7 @@ class UserController extends Controller
     {
       $user = User::find($id);
       $user->delete();
-
-      // redirect
-      Session::flash('message', 'Successfully deleted the car!');
+      Session::flash('message', 'Successfully deleted!');
       return Redirect::to('users');
     }
 
