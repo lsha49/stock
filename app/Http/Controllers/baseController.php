@@ -20,6 +20,8 @@ class baseController extends Controller
 
   public function index()
   {
+    $this->iniQData();
+    $this->iniNData();
     $data['qdata'] = Qdata::all();
     $data['ndata'] = Ndata::all();
     $data['qprofit'] = $this->findMaxProfit($data['qdata']->toArray());
@@ -42,6 +44,78 @@ class baseController extends Controller
     }
       return -$bestProfit;
   }
+
+
+  private function iniQData(){
+    $datas[] = (new \RestClient([
+      'base_url' => 'https://api.intrinio.com',
+     ]))->get('prices', [
+      'Authorization: Basic '. base64_encode("7d41d2042b619d345bcdf85fd693b0f5:ede90d53b6996ebe97bf3e7469be7584"),
+      'identifier' => 'QCOM',
+      'start_date' => '2017-06-01',
+      'end_date' => '2018-07-01',
+      'frequency' => 'daily',
+     ])->decode_response()->data;
+
+     DB::beginTransaction();
+     try {
+      foreach ($datas as $data) {
+        $qdata = new Qdata();
+        $qdata->DATE = $data->date;
+        $qdata->CLOSE = $data->close;
+        $qdata->save();
+      }
+     } catch (Exception $e) {
+         DB::rollBack();
+         return response()->json([
+             "message" => "Action Failed",
+             "status_code" => 400,
+         ], 400);
+     }
+     DB::commit();
+     return response()->json([
+         "message" => "Action Successful",
+         "status_code" => 200,
+     ], 200);
+  }
+
+
+  private function iniNData(){
+    $datas[] = (new \RestClient([
+      'base_url' => 'https://api.intrinio.com',
+     ]))->get('prices', [
+      'Authorization: Basic '. base64_encode("7d41d2042b619d345bcdf85fd693b0f5:ede90d53b6996ebe97bf3e7469be7584"),
+      'identifier' => 'NDAQ',
+      'start_date' => '2017-06-01',
+      'end_date' => '2018-07-01',
+      'frequency' => 'daily',
+     ])->decode_response()->data;
+
+        DB::beginTransaction();
+        try {
+          foreach ($datas as $data) {
+            $ndata = new Ndata();
+            $ndata->DATE = $data->date;
+            $ndata->CLOSE = $data->close;
+            $ndata->save();
+        }
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "message" => "Action Failed",
+                "status_code" => 400,
+            ], 400);
+        }
+        DB::commit();
+        return response()->json([
+            "message" => "Action Successful",
+            "status_code" => 200,
+        ], 200); 
+  }
+
+  
+  
+
 
 
 
